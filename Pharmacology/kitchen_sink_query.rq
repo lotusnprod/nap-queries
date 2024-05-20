@@ -1,0 +1,60 @@
+PREFIX n: <https://nap.nprod.net/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+
+SELECT distinct ?citation_code ?pharmacology_name ?worktype ?worktypename
+  ?organismclass_name ?organism_familyname ?organism_genusname ?organism_speciesname ?organism_partname 
+  ?partcondition  ?extract_name ?qualitativeresult_code 
+  ?animal_name ?gender_name ?administrationroute_name ?doseexpression_name ?doseamount ?doseunit_name ?perunit_name
+  ?pathologicalsystem
+  ?a3_name ?disease 
+  ?orgnumber ?pharmacy_number 
+
+WHERE {
+  ?pharmacy n:has_worktype/n:code ?worktype;
+            n:has_worktype/n:name ?worktypename;
+    	    n:has_pharmacology/n:name ?pharmacology_name;
+            n:has_pharmacology/n:code ?pharmacology_code;
+            n:has_organism ?organism;
+            n:number ?pharmacy_number.
+  ?organism n:participatesIn ?citation;
+            n:organismclass/n:name ?organismclass_name;
+            n:familyname ?organism_familyname;
+            n:genusname ?organism_genusname;
+	    n:speciesname ?organism_speciesname;
+            n:number ?orgnumber.
+  ?citation n:code ?citation_code.
+
+  OPTIONAL { ?organism n:organismclass/n:name ?organismclass_name. }
+  OPTIONAL { ?organism n:familyname ?organism_familyname. }
+  OPTIONAL { ?organism n:genusname ?organism_genusname. }
+  OPTIONAL { ?organism n:speciesname ?organism_speciesname. }
+  OPTIONAL { ?organism n:speciesauthority ?organism_authority. }
+  OPTIONAL { ?organism n:collectedPart/n:name ?organism_partname. }
+  OPTIONAL { ?pharmacy n:administeredBy/n:name ?administrationroute_name. }
+  OPTIONAL { ?pharmacy n:has_animal/n:name ?animal_name. }
+  OPTIONAL { ?pharmacy n:has_extract/n:name ?extract_name. }
+  OPTIONAL { ?pharmacy n:has_gender/n:name ?gender_name. }
+  OPTIONAL { ?pharmacy n:has_doseexpression/n:name ?doseexpression_name.}
+  OPTIONAL { ?pharmacy n:doseamount ?doseamount.}
+  OPTIONAL { ?pharmacy n:has_doseunit/n:name ?doseunit_name. }
+  OPTIONAL { ?pharmacy n:has_perunit/n:name ?perunit_name. }
+  OPTIONAL { ?pharmacy n:doseamount ?doseamount. }
+  OPTIONAL { ?pharmacy n:disease ?disease. }
+  OPTIONAL { ?pharmacy n:has_pathologicalsystem/n:name ?pathologicalsystem. }
+  OPTIONAL { ?pharmacy n:has_alert/n:code ?a3_code.}
+  OPTIONAL { ?pharmacy n:has_alert/n:name ?a3_name.}
+  OPTIONAL { ?pharmacy n:disease ?disease. }
+  OPTIONAL { ?pharmacy n:has_qualitativeresult/n:code ?qualitativeresult_code. }
+  OPTIONAL { ?pharmacy n:has_pathologicalsystem/n:name ?pathologicalsystem_name. }
+  OPTIONAL { ?pharmacology n:name ?pharmacology_name. }
+  OPTIONAL { ?pharmacology n:code ?pharmacology_code. }
+
+  VALUES ?worktype {  "72" "74" "76" "78" "79" "CL"}
+  VALUES ?organism_genusname {"GENTIANA"}
+}
+
+ORDER BY  ?citation_code ?worktype ?organism_speciesname ?pharmacology_name ?pharmacy_number ?a3_name
+
