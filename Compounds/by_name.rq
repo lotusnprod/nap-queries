@@ -1,0 +1,7 @@
+PREFIX n: <https://nap.nprod.net/>
+
+SELECT ?s ?p ?o {
+  ?s a n:compound;
+     n:name "QUERCETIN".
+  ?s ?p ?o.
+} 
