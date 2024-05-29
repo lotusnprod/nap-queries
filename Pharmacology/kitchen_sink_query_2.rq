@@ -34,7 +34,7 @@ WHERE {
   }
   ?organism n:participatesIn ?citation;
             n:id ?organism_id;
-            n:number ?organism_number.
+	    n:number ?organism_number.
  
   ?citation n:code ?citation_code;
            # n:has_articletype/n:name ?articletype;
