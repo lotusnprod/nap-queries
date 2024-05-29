@@ -1,0 +1,84 @@
+PREFIX n: <https://nap.nprod.net/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+
+SELECT DISTINCT ?citation_code ?compound_name ?compoundcode_name 
+?organismclass_name ?organism_familyname ?organism_genusname ?organism_speciesname 
+?worktype ?pharmacology_name  ?qualitativeresult_code ?qualitativeresult_name    
+?animal_name ?gender_name
+?administrationroute_name 
+?doseexpression_name ?doseamount ?doseunit_name ?perunit_name 
+?pathologicalsystem_name
+?pharmacy_id ?organism_number ?pharmacy_number 
+?title ?journal_name  ?authors ?volume ?issue ?firstpage ?lastpage ?year
+
+WHERE {
+   
+  ?pharmacy n:has_worktype/n:code ?worktype;
+            n:has_pharmacology/n:name ?pharmacology_name;
+            n:has_pharmacology/n:code ?pharmacology_code;
+           # n:has_worktype/n:code "73";
+           # n:has_worktype/n:code ?pharmacology_codes;
+            n:has_organism ?organism;
+            n:id ?pharmacy_id;
+            n:number ?pharmacy_number;
+                      
+  OPTIONAL { ?pharmacy n:disease ?disease. }
+  OPTIONAL { ?pharmacy n:has_pathologicalsystem/n:name ?pathologicalsystem_name. }
+  OPTIONAL { ?pharmacy n:has_participant ?compound.
+             ?compound a n:compound;
+                       n:name ?compound_name;
+                       n:has_compoundcode/n:name ?compoundcode_name;
+                       n:id ?compound_id. 
+  }
+  ?organism n:participatesIn ?citation;
+            n:id ?organism_id;
+            n:number ?organism_number.
+ 
+  ?citation n:code ?citation_code;
+           # n:has_articletype/n:name ?articletype;
+           # n:in_language/n:name ?language;                 
+            n:title ?title;
+            n:authors   ?authors;
+            n:volume    ?volume;
+            n:issue     ?issue;
+            n:firstpage ?firstpage;
+            n:lastpage ?lastpage;
+            n:year      ?year;
+    n:in_journal ?journal.
+      ?journal n:name ?journal_name.
+        
+ 
+  OPTIONAL { ?organism n:organismclass/n:name ?organismclass_name. }
+  OPTIONAL { ?organism n:familyname ?organism_familyname. }
+  OPTIONAL { ?organism n:genusname ?organism_genusname. }
+  OPTIONAL { ?organism n:speciesname ?organism_speciesname. }
+  OPTIONAL { ?organism n:collectedpart/n:organismpart ?organismpart. }
+  #OPTIONAL { ?compound n:has_compoundcode/n:name ?compoundcode_name. }
+  OPTIONAL { ?pharmacy n:administeredBy/n:name ?administrationroute_name. }
+  OPTIONAL { ?pharmacy n:has_animal/n:name ?animal_name. }
+  OPTIONAL { ?pharmacy n:has_extract/n:name ?extract_name. }
+  OPTIONAL { ?pharmacy n:has_gender/n:name ?gender_name. }
+  OPTIONAL { ?pharmacy n:has_doseexpression/n:name ?doseexpression_name.}
+  OPTIONAL { ?pharmacy n:has_doseunit/n:name ?doseunit_name. }
+  OPTIONAL { ?pharmacy n:has_perunit/n:name ?perunit_name. }
+  OPTIONAL { ?pharmacy n:doseamount ?doseamount. }
+  OPTIONAL {
+    ?pharmacy n:has_alert/n:name ?a3_name.
+     FILTER (!regex(?a3_name, "SEE ARTICLE" ))
+     FILTER (!regex(?a3_name, "ABSTRACT" ))
+     FILTER (!regex(?a3_name, "PATENTED" ))
+     FILTER (!regex(?a3_name, "SIGNIFICANT" ))
+     FILTER (!regex(?a3_name, "REVIEW" ))
+  }
+  OPTIONAL { ?pharmacy n:disease ?disease. }
+  OPTIONAL { ?pharmacy n:has_qualitativeresult/n:code ?qualitativeresult_code. }
+   
+  VALUES ?worktype { "79"}
+  VALUES ?pharmacology_code  { "11005" }
+  VALUES ?qualitativeresult_code { "." "9" "+" "2" }
+}
+  
+ORDER BY  ?citation_code ?worktype ?organism_speciesname ?pharmacology_name ?pharmacy_number ?a3_name
+
