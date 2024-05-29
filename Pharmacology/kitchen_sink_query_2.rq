@@ -40,16 +40,15 @@ WHERE {
            # n:has_articletype/n:name ?articletype;
            # n:in_language/n:name ?language;                 
             n:title ?title;
-            n:authors   ?authors;
-            n:volume    ?volume;
-            n:issue     ?issue;
+            n:authors   ?authors;
+            n:volume    ?volume;
+            n:issue     ?issue;
             n:firstpage ?firstpage;
             n:lastpage ?lastpage;
-            n:year      ?year;
+            n:year      ?year;
     n:in_journal ?journal.
       ?journal n:name ?journal_name.
-        
- 
+
   OPTIONAL { ?organism n:organismclass/n:name ?organismclass_name. }
   OPTIONAL { ?organism n:familyname ?organism_familyname. }
   OPTIONAL { ?organism n:genusname ?organism_genusname. }
