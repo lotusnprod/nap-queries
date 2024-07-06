@@ -21,6 +21,8 @@ VALUES ?worktypecode {
  "CL" # extract clinical
  "79" # compound clinical
  "99" # extract ethno
+ "P2" # PHARMACOLOGY - EFFECT ON PLANTS
+ "68" # PHARMACOLOGY OF COMPOUND - EFFECT ON PLANTS
 }
 }
 
