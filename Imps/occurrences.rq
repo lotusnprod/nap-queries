@@ -1,6 +1,6 @@
 PREFIX n: <https://nap.nprod.net/>
 
-SELECT DISTINCT ?compound ?compound_name (count(distinct ?citation) as ?occurrences)
+SELECT DISTINCT ?compound ?compound_name (count(distinct ?pharmacy) as ?occurrences)
 
 WHERE {
 ?pharmacy n:has_worktype ?worktype;
