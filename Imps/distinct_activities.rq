@@ -1,0 +1,27 @@
+PREFIX n: <https://nap.nprod.net/>
+
+SELECT DISTINCT ?compound ?compound_name (count(distinct ?pharmacology) as ?distinct_activities)
+
+WHERE {
+?pharmacy n:has_worktype ?worktype;
+          n:has_organism ?organism;
+          n:has_pharmacology ?pharmacology;
+          n:has_participant ?compound.
+?compound a n:compound;
+          n:name ?compound_name.
+?worktype n:code ?worktypecode.
+
+VALUES ?worktypecode {
+ "72" # extract in vitro
+ "73" # compound in vitro
+ "76" # extract in vivo
+ "77" # compound in vivo
+ "CL" # extract clinical
+ "79" # compound clinical
+ "99" # extract ethno
+}
+}
+
+GROUP BY ?compound ?compound_name
+ORDER BY DESC(?distinct_activities)
+LIMIT 500
