@@ -14,6 +14,8 @@ WHERE {
 VALUES ?worktypecode {
  "72" # extract in vitro
  "73" # compound in vitro
+ "74" # extract in situ
+ "75" # compound in situ
  "76" # extract in vivo
  "77" # compound in vivo
  "CL" # extract clinical
